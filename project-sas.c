@@ -14,7 +14,6 @@
 
 #define MAX_CHAR 256
 #define MAX_students 100000
-
 typedef struct sas
 {
     char Id[30];
@@ -24,6 +23,22 @@ typedef struct sas
     char department[MAX_CHAR];
     int point;
 } student;
+char generatedID[29]; 
+
+char random_char(int index) {
+    char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    return charset[index];
+}
+
+void genirateID() {
+    srand(time(NULL)); 
+    int i, index;
+    for (i = 0; i < 16; i++) { 
+        index = rand() % 62;
+        generatedID[i] = random_char(index);
+    }
+    generatedID[16] = '\0'; 
+}
 
 void add_student(student arr[], int index, char departments[])
 {
@@ -91,6 +106,7 @@ void add_student(student arr[], int index, char departments[])
             printf("invalid input\n");
             scanf("%d", &arr[index].point);
         }
+        strcpy(arr[index].Id,generatedID);
         ++index;
         printf("you have added a student to the list do you want to contenu:1.contenu \n 2.stop ");
         scanf("%s", &choice);
@@ -112,7 +128,7 @@ void add_student(student arr[], int index, char departments[])
         for (int i = index; i < index + n; i++)
         {
             system(CLEAR);
-            printf("what is the student first name: number %d",counter);
+            printf("what is the student first name: number %d", counter);
             while (scanf(" %[^\n]s", arr[i].FirstName) != 1)
             {
                 getchar();
@@ -121,7 +137,7 @@ void add_student(student arr[], int index, char departments[])
             }
             getchar();
             sleep(1);
-            printf("what is the student last name: number %d",counter);
+            printf("what is the student last name: number %d", counter);
 
             while (scanf(" %[^\n]s", arr[i].LastName) != 1)
             {
@@ -132,7 +148,7 @@ void add_student(student arr[], int index, char departments[])
             }
             getchar();
             sleep(1);
-            printf("what is the student date of birth: number %d",counter);
+            printf("what is the student date of birth: number %d", counter);
 
             while (scanf(" %[^\n]s", arr[i].dathOfBearth) != 1)
             {
@@ -166,6 +182,7 @@ void add_student(student arr[], int index, char departments[])
                 scanf("%d", &arr[i].point);
             }
             ++counter;
+            strcpy(arr[i].Id,generatedID);
         }
         printf("all of the students wher added\n");
         printf("do you whant to continu\n");
@@ -214,6 +231,8 @@ int main()
         {
         case 1:
             add_student(students, index, departments);
+            break;
+        case 2:
             break;
         }
     }
