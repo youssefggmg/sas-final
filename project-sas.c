@@ -410,46 +410,58 @@ void geniralavrege(student arr[], int index, int numberOfDeps)
 }
 
 // edit or delete function
-void editDelete(student arr[], int *index, int choice, char name[]) {
+void editDelete(student arr[], int *index, int choice, char name[])
+{
     system(CLEAR);
     int numchouse;
     char temp[MAX_CHAR];
 
     printf("Do you want to use Name or ID? \n1. Name \n2. ID\n");
-    while (scanf("%d", &numchouse) != 1 || (numchouse != 1 && numchouse != 2)) {
+    while (scanf("%d", &numchouse) != 1 || (numchouse != 1 && numchouse != 2))
+    {
         system(CLEAR);
         printf("Invalid choice. Please enter 1 (Name) or 2 (ID).\n");
-        while (getchar() != '\n');  
+        while (getchar() != '\n')
+            ;
     }
 
     printf("Do you want to edit or delete the student?\n1. Edit \n2. Delete\n");
-    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2)) {
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+    {
         system(CLEAR);
         printf("Invalid input. Please enter 1 (Edit) or 2 (Delete).\n");
-        while (getchar() != '\n'); 
+        while (getchar() != '\n')
+            ;
     }
+    // I've used switch  here instead of if else by it was to harde for me to folow with nisted so I used if else
 
-    if (numchouse == 1) {
+    if (numchouse == 1)
+    {
         printf("Enter the name of the student you want to edit or delete:\n");
-        while (scanf(" %[^\n]s", temp) != 1) {
+        while (scanf(" %[^\n]s", temp) != 1)
+        {
             system(CLEAR);
             printf("Invalid input. Please enter a valid name.\n");
         }
 
-        for (int i = 0; i < *index; i++) {
-            // Use strcmp to compare strings, not '=='
-            if (strcmp(arr[i].FirstName, temp) == 0) {
-                if (choice == 1) {  // Edit
+        for (int i = 0; i < *index; i++)
+        {
+            if (strcmp(arr[i].FirstName, temp) == 0)
+            {
+                if (choice == 1)
+                { // Edit
                     printf("Editing student...\n");
 
                     printf("Enter the new first name: ");
-                    while (scanf(" %[^\n]s", arr[i].FirstName) != 1) {
+                    while (scanf(" %[^\n]s", arr[i].FirstName) != 1)
+                    {
                         system(CLEAR);
                         printf("Invalid input. Please enter a valid first name.\n");
                     }
 
                     printf("Enter the new last name: ");
-                    while (scanf(" %[^\n]s", arr[i].LastName) != 1) {
+                    while (scanf(" %[^\n]s", arr[i].LastName) != 1)
+                    {
                         system(CLEAR);
                         printf("Invalid input. Please enter a valid last name.\n");
                     }
@@ -464,59 +476,71 @@ void editDelete(student arr[], int *index, int choice, char name[]) {
                     printf("7. Psychology\n");
                     printf("8. Engineering\n");
 
-                    while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8) {
+                    while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8)
+                    {
                         printf("Invalid choice. Re-enter the choice: ");
-                        while (getchar() != '\n');  // clear input buffer
+                        while (getchar() != '\n')
+                            ; // clear input buffer
                     }
 
                     // Array of department strings to map the choice to department name
                     char departments[][30] = {
                         "Computer Science", "Mathematics", "Physics",
                         "Chemistry", "Biology", "Economics",
-                        "Psychology", "Engineering"
-                    };
+                        "Psychology", "Engineering"};
                     strcpy(arr[i].department, departments[choice - 1]);
 
                     printf("Enter the new point (0-20): ");
-                    while (scanf("%d", &arr[i].point) != 1 || arr[i].point < 0 || arr[i].point > 20) {
+                    while (scanf("%d", &arr[i].point) != 1 || arr[i].point < 0 || arr[i].point > 20)
+                    {
                         printf("Invalid point. Please re-enter a valid point (0-20).\n");
-                        while (getchar() != '\n');  // clear input buffer
+                        while (getchar() != '\n')
+                            ; // clear input buffer
                     }
 
                     printf("Student edited successfully!\n");
                     break;
-
-                } else if (choice == 2) {  // Delete
-                    for (int j = i; j < *index - 1; j++) {
-                        arr[j] = arr[j + 1];  // Shift the elements to 
+                }
+                else if (choice == 2)
+                { // Delete
+                    for (int j = i; j < *index - 1; j++)
+                    {
+                        arr[j] = arr[j + 1]; // Shift the elements to
                     }
-                    (*index)--;  // Decrease the number of students
+                    (*index)--; // Decrease the number of students
                     printf("Student deleted successfully!\n");
                     break;
                 }
             }
         }
-
-    } else if (numchouse == 2) {
+    }
+    else if (numchouse == 2)
+    {
         printf("Enter the student ID you want to edit or delete:\n");
-        while (scanf(" %[^\n]s", temp) != 1) {
+        while (scanf(" %[^\n]s", temp) != 1)
+        {
             system(CLEAR);
             printf("Invalid input. Please enter a valid ID.\n");
         }
 
-        for (int i = 0; i < *index; i++) {
-            if (strcmp(arr[i].Id, temp) == 0) {
-                if (choice == 1) {  // Edit
+        for (int i = 0; i < *index; i++)
+        {
+            if (strcmp(arr[i].Id, temp) == 0)
+            {
+                if (choice == 1)
+                { // Edit
                     printf("Editing student...\n");
 
                     printf("Enter the new first name: ");
-                    while (scanf(" %[^\n]s", arr[i].FirstName) != 1) {
+                    while (scanf(" %[^\n]s", arr[i].FirstName) != 1)
+                    {
                         system(CLEAR);
                         printf("Invalid input. Please enter a valid first name.\n");
                     }
 
                     printf("Enter the new last name: ");
-                    while (scanf(" %[^\n]s", arr[i].LastName) != 1) {
+                    while (scanf(" %[^\n]s", arr[i].LastName) != 1)
+                    {
                         system(CLEAR);
                         printf("Invalid input. Please enter a valid last name.\n");
                     }
@@ -531,32 +555,37 @@ void editDelete(student arr[], int *index, int choice, char name[]) {
                     printf("7. Psychology\n");
                     printf("8. Engineering\n");
 
-                    while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8) {
+                    while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8)
+                    {
                         printf("Invalid choice. Re-enter the choice: ");
-                        while (getchar() != '\n');  // clear input buffer
+                        while (getchar() != '\n')
+                            ; // clear input buffer
                     }
 
                     char departments[][30] = {
                         "Computer Science", "Mathematics", "Physics",
                         "Chemistry", "Biology", "Economics",
-                        "Psychology", "Engineering"
-                    };
+                        "Psychology", "Engineering"};
                     strcpy(arr[i].department, departments[choice - 1]);
 
                     printf("Enter the new point (0-20): ");
-                    while (scanf("%d", &arr[i].point) != 1 || arr[i].point < 0 || arr[i].point > 20) {
+                    while (scanf("%d", &arr[i].point) != 1 || arr[i].point < 0 || arr[i].point > 20)
+                    {
                         printf("Invalid point. Please re-enter a valid point (0-20).\n");
-                        while (getchar() != '\n');  // clear input buffer
+                        while (getchar() != '\n')
+                            ; // clear input buffer
                     }
 
                     printf("Student edited successfully!\n");
                     break;
-
-                } else if (choice == 2) {  // Delete
-                    for (int j = i; j < *index - 1; j++) {
-                        arr[j] = arr[j + 1];  // Shift the elements to the left
+                }
+                else if (choice == 2)
+                { // Delete
+                    for (int j = i; j < *index - 1; j++)
+                    {
+                        arr[j] = arr[j + 1]; // Shift the elements to the left
                     }
-                    (*index)--;  // Decrease the number of students
+                    (*index)--; // Decrease the number of students
                     printf("Student deleted successfully!\n");
                     break;
                 }
@@ -565,13 +594,16 @@ void editDelete(student arr[], int *index, int choice, char name[]) {
     }
 
     printf("Do you want to continue? 1. Yes 2. No\n");
-    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2)) {
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+    {
         system(CLEAR);
         printf("Invalid choice. Please enter 1 to continue or 2 to exit.\n");
-        while (getchar() != '\n');  // clear input buffer
+        while (getchar() != '\n')
+            ; // clear input buffer
     }
 
-    if (choice == 2) {
+    if (choice == 2)
+    {
         exit(0);
     }
 }
@@ -606,11 +638,12 @@ int main()
             printf("2. search student\n");
             printf("3. students details\n");
             printf("4. general average\n");
-            printf("5. Statistics\n");
-            printf("6. edit/delet student\n");
+            printf("5. edit/delet student\n");
+            printf("6. Statistics\n");
             printf("7. exit\n");
             scanf("%d", &choice);
         }
+        // indentation is the worst it makes  the code look like a mess
         switch (choice)
         {
         case 1:
@@ -712,6 +745,14 @@ int main()
             {
                 exit(0);
             }
+            break;
+        case 6:
+        
+            break;
+            case 7:
+            system(CLEAR);
+            printf("thank you for using our application\n");
+            return 0;
             break;
         }
 
