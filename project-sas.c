@@ -43,7 +43,7 @@ void printstudents(student arr[], int num)
 
     for (int i = 0; i < num; i++)
     {
-        printf("Student #%d\n", i + 1); 
+        printf("Student #%d\n", i + 1);
         printf("  ID:           %s\n", arr[i].Id);
         printf("  Name:         %s %s\n", arr[i].FirstName, arr[i].LastName);
         printf("  Date of Birth: %s\n", arr[i].dateOfBirth);
@@ -277,6 +277,8 @@ void add_student(student arr[], int *index)
     }
     }
 }
+// search for the student  with the given ID & name & department
+
 void searchStudent(student arr[], int index, char name[], int choice)
 {
     int left = 0, right = index - 1, mid, compair;
@@ -384,10 +386,34 @@ void searchStudent(student arr[], int index, char name[], int choice)
     }
 }
 
+// function for avrege point for each department
+void geniralavrege(student arr[], int index, int numberOfDeps)
+{
+    system(CLEAR);
+    char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+
+    for (int i = 0; i < numberOfDeps; i++)
+    {
+        int sum = 0;
+        int count = 0;
+
+        for (int j = 0; j < index; j++)
+        {
+            if (strcmp(arr[j].department, departments[i - 1]) == 0)
+            {
+                sum += arr[j].point;
+                count++;
+            }
+        }
+        printf("the avrege points of the %s department is  %d\n", departments[i - 1], sum / count);
+    }
+}
+
 int main()
 {
     student students[MAX_students];
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    int depcount = 8;
     int choice, point, index = 0;
 
     char name[MAX_CHAR];
@@ -420,7 +446,7 @@ int main()
         switch (choice)
         {
         case 1:
-            add_student(students, index);
+            add_student(students, &index);
             break;
         case 2:
             printf("do you wnat to  search by 1.name or 2. id 3.departement?\n");
@@ -489,6 +515,21 @@ int main()
 
             break;
         case 4:
+            geniralavrege(students, index, depcount);
+            printf("Do you want to contenu? 1. Continue 2. Stop\n");
+            while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+            {
+                system(CLEAR);
+                printf("You have entered a wrong choice. Please enter 1 or 2\n");
+                scanf("%d", &choice);
+            }
+
+            if (choice = !1)
+            {
+                exit(0);
+            }
+            break;
+        case 5:
 
             break;
         }
