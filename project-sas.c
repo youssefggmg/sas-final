@@ -24,6 +24,8 @@ typedef struct sas
     int point;
 } student;
 
+// minor functions
+
 // store a random ID
 char generatedID[GENERATED_ID_LENGTH];
 
@@ -61,7 +63,7 @@ char random_char(int index)
 }
 
 // genirate a random ID
-void generateID()
+void genirateID()
 {
     int i, index;
     for (i = 0; i < GENERATED_ID_LENGTH; i++)
@@ -72,9 +74,35 @@ void generateID()
     generatedID[GENERATED_ID_LENGTH] = '\0'; // Null-terminate the string
 }
 
-// sort the the array with selection sort
+// sort the the array with selection sort higher to lower
 
 void selectioSortpoint(student arr[], int n)
+{
+    int i, j, min_idx;
+    for (i = 0; i < n - 1; i++)
+    {
+        min_idx = i;
+
+        for (j = i + 1; j < n; j++)
+        {
+            if (arr[j].point < arr[min_idx].point)
+            {
+                min_idx = j;
+            }
+        }
+
+        if (min_idx != i)
+        {
+            // Swap the entire structure between arr[i] and arr[min_idx]
+            student temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+    }
+}
+// reversed sort lower  to higher
+
+void selectioSortpointReversed(student arr[], int n)
 {
     int i, j, min_idx;
     for (i = 0; i < n - 1; i++)
@@ -121,6 +149,32 @@ void selectioSort(student arr[], int n)
         }
     }
 }
+// reverse sorting by name Z-a
+
+void selectioSortReversed(student arr[], int n)
+{
+    int i, j, min_idx;
+    for (i = 0; i < n - 1; i++)
+    {
+        min_idx = i;
+
+        for (j = i + 1; j < n; j++)
+        {
+            if (strcmp(arr[j].FirstName, arr[min_idx].FirstName) > 0)
+            {
+                min_idx = j;
+            }
+        }
+        if (min_idx != i)
+        {
+            student temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+    }
+}
+
+// real function 
 
 void add_student(student arr[], int *index)
 {
@@ -267,7 +321,7 @@ void add_student(student arr[], int *index)
 
             // Generate a simple student ID
             genirateID();
-            strcpy(arr[*index].Id, generatedID);
+            strcpy(arr[i].Id, generatedID);
 
             counter++;
         }
