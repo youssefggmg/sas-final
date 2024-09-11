@@ -126,6 +126,7 @@ void selectioSortpointReversed(student arr[], int n)
         }
     }
 }
+// sorting  by name from A-z
 
 void selectioSort(student arr[], int n)
 {
@@ -174,7 +175,7 @@ void selectioSortReversed(student arr[], int n)
     }
 }
 
-// real function 
+// real function
 
 void add_student(student arr[], int *index)
 {
@@ -335,10 +336,11 @@ void add_student(student arr[], int *index)
 
 void searchStudent(student arr[], int index, char name[], int choice)
 {
+    selectioSort(arr, index);
     int left = 0, right = index - 1, mid, compair;
     char searchId[MAX_CHAR];
 
-    printstudents(arr, index); // Print all students (assuming this function exists)
+    printstudents(arr, index);
 
     if (choice == 1) // Search by FirstName
     {
@@ -434,7 +436,7 @@ void searchStudent(student arr[], int index, char name[], int choice)
         scanf("%d", &choice);
     }
 
-    if (choice = !1)
+    if (choice != 1)
     {
         exit(0);
     }
@@ -444,6 +446,7 @@ void searchStudent(student arr[], int index, char name[], int choice)
 void geniralavrege(student arr[], int index, int numberOfDeps)
 {
     system(CLEAR);
+    // used this methos instand of geving it as an argument becouse the last one made a lot of problems
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
 
     for (int i = 0; i < numberOfDeps; i++)
@@ -469,6 +472,11 @@ void editDelete(student arr[], int *index, int choice, char name[])
     system(CLEAR);
     int numchouse;
     char temp[MAX_CHAR];
+    // Array of department strings to map the choice to department name
+    char departments[][30] = {
+        "Computer Science", "Mathematics", "Physics",
+        "Chemistry", "Biology", "Economics",
+        "Psychology", "Engineering"};
 
     printf("Do you want to use Name or ID? \n1. Name \n2. ID\n");
     while (scanf("%d", &numchouse) != 1 || (numchouse != 1 && numchouse != 2))
@@ -487,7 +495,7 @@ void editDelete(student arr[], int *index, int choice, char name[])
         while (getchar() != '\n')
             ;
     }
-    // I've used switch  here instead of if else by it was to harde for me to folow with nisted so I used if else
+    // I've used if else here instead of switch becouse it was to harde for me to folow with nisted so I used if else
 
     if (numchouse == 1)
     {
@@ -536,12 +544,6 @@ void editDelete(student arr[], int *index, int choice, char name[])
                         while (getchar() != '\n')
                             ; // clear input buffer
                     }
-
-                    // Array of department strings to map the choice to department name
-                    char departments[][30] = {
-                        "Computer Science", "Mathematics", "Physics",
-                        "Chemistry", "Biology", "Economics",
-                        "Psychology", "Engineering"};
                     strcpy(arr[i].department, departments[choice - 1]);
 
                     printf("Enter the new point (0-20): ");
@@ -670,6 +672,18 @@ Statistics(student arr[], int index, int choice)
     {
     case 1:
         printf("you have  %d students\n", index);
+        printf("Do you want to contenu? 1. Continue 2. Stop\n");
+        while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+        {
+            system(CLEAR);
+            printf("You have entered a wrong choice. Please enter 1 or 2\n");
+            scanf("%d", &choice);
+        }
+
+        if (choice != 1)
+        {
+            exit(0);
+        }
         break;
     case 2:
         printf("the number in each department is :\n");
@@ -692,8 +706,7 @@ Statistics(student arr[], int index, int choice)
             printf("You have entered a wrong choice. Please enter 1 or 2\n");
             scanf("%d", &choice);
         }
-
-        if (choice = !1)
+        if (choice != 1)
         {
             exit(0);
         }
@@ -719,26 +732,56 @@ Statistics(student arr[], int index, int choice)
             scanf("%d", &choice);
         }
 
-        if (choice = !1)
+        if (choice != 1)
         {
             exit(0);
         }
         break;
     case 4:
         system(CLEAR);
-        printf("show the successful and fail students in  each department\n");
+        printf("Successful and failed students in each department:\n");
         for (int i = 0; i < depnum; i++)
         {
-            printf("department : %s\n", departments[i]);
+            printf("Department: %s\n", departments[i]);
+            printf("Successful students (>= 10 points):\n");
+            int successCount = 0, failCount = 0;
+
             for (int j = 0; j < index; j++)
             {
-                if (arr[j].department == departments[i] && arr[j].point >= 10)
+                if (strcmp(arr[j].department, departments[i]) == 0)
                 {
-                    printf("%s %s|| %s\n", arr[j].FirstName, arr[j].LastName, arr[j].LastName);
+                    if (arr[j].point >= 10)
+                    {
+                        printf("%s %s\n", arr[j].FirstName, arr[j].LastName);
+                        successCount++;
+                    }
                 }
             }
-            break;
+
+            if (successCount == 0)
+            {
+                printf("No successful students in this department.\n");
+            }
+
+            printf("\nFailed students (< 10 points):\n");
+            for (int j = 0; j < index; j++)
+            {
+                if (strcmp(arr[j].department, departments[i]) == 0)
+                {
+                    if (arr[j].point < 10)
+                    {
+                        printf("%s %s\n", arr[j].FirstName, arr[j].LastName);
+                        failCount++;
+                    }
+                }
+            }
+            if (failCount == 0)
+            {
+                printf("No failed students in this department.\n");
+            }
+            printf("############################################\n");
         }
+        break;
     }
 }
 
@@ -843,7 +886,7 @@ int main()
                 scanf("%d", &choice);
             }
 
-            if (choice = !1)
+            if (choice != 1)
             {
                 exit(0);
             }
@@ -875,7 +918,7 @@ int main()
                 scanf("%d", &choice);
             }
 
-            if (choice = !1)
+            if (choice != 1)
             {
                 exit(0);
             }
