@@ -592,7 +592,6 @@ void editDelete(student arr[], int *index, int choice, char name[])
             }
         }
     }
-
     printf("Do you want to continue? 1. Yes 2. No\n");
     while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
     {
@@ -605,6 +604,87 @@ void editDelete(student arr[], int *index, int choice, char name[])
     if (choice == 2)
     {
         exit(0);
+    }
+}
+// the function that show the Statistics
+Statistics(student arr[], int index, int choice)
+{
+    system(CLEAR);
+    char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    int depnum = 8;
+    switch (choice)
+    {
+    case 1:
+        printf("you have  %d students\n", index);
+        break;
+    case 2:
+        printf("the number in each department is :\n");
+        for (int i = 0; i < 8; i++)
+        {
+            int counter = 0;
+            for (int j = 0; j < index; j++)
+            {
+                if (strcmp(departments[i], arr[j].department) == 0)
+                {
+                    counter++;
+                }
+            }
+            printf(" the number of students in %s department is : %d\n", departments[i], counter);
+        }
+        printf("Do you want to contenu? 1. Continue 2. Stop\n");
+        while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+        {
+            system(CLEAR);
+            printf("You have entered a wrong choice. Please enter 1 or 2\n");
+            scanf("%d", &choice);
+        }
+
+        if (choice = !1)
+        {
+            exit(0);
+        }
+        break;
+    case 3:
+        system(CLEAR);
+        selectioSortpoint(arr, index);
+        printf("top 3 students  in each department are :\n");
+        for (int i = 0; i < depnum; i++)
+        {
+            printf(" department  : %s\n", departments[i]);
+            for (int j = 0; j < 3; j++)
+            {
+                printf("the student number %d in the departmet %s is %s %s", j, departments[i], arr[j].FirstName, arr[j].LastName);
+            }
+            printf("############################################");
+        }
+        printf("Do you want to contenu? 1. Continue 2. Stop\n");
+        while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+        {
+            system(CLEAR);
+            printf("You have entered a wrong choice. Please enter 1 or 2\n");
+            scanf("%d", &choice);
+        }
+
+        if (choice = !1)
+        {
+            exit(0);
+        }
+        break;
+    case 4:
+        system(CLEAR);
+        printf("show the successful and fail students in  each department\n");
+        for (int i = 0; i < depnum; i++)
+        {
+            printf("department : %s\n", departments[i]);
+            for (int j = 0; j < index; j++)
+            {
+                if (arr[j].department == departments[i] && arr[j].point >= 10)
+                {
+                    printf("%s %s|| %s\n", arr[j].FirstName, arr[j].LastName, arr[j].LastName);
+                }
+            }
+            break;
+        }
     }
 }
 
@@ -747,11 +827,24 @@ int main()
             }
             break;
         case 6:
-        
+            system(CLEAR);
+            printf("what do you know about the universcity ");
+
+            Statistics(students, index, choice);
             break;
-            case 7:
+        case 7:
             system(CLEAR);
             printf("thank you for using our application\n");
+            printf("1. the total number of students enrolled.\n");
+            printf("2. View the number of students in each department.\n");
+            printf("3. Show the 3 students with the best grades.\n");
+            printf("4. Show the number of successful students in each department.\n");
+            while (scanf("%d", &choice) != 1)
+            {
+                printf("invalide choice\n");
+            }
+            Statistics(students, index, choice);
+
             return 0;
             break;
         }
