@@ -12,7 +12,7 @@
 #endif
 
 #define MAX_CHAR 256
-#define MAX_students 100000
+#define MAX_students 255
 #define GENERATED_ID_LENGTH 25
 typedef struct sas
 {
@@ -98,6 +98,36 @@ void selectioSortpoint(student arr[], int n)
             arr[i] = arr[min_idx];
             arr[min_idx] = temp;
         }
+    }
+}
+void showDepStudent(student arr[], int index, char dep[])
+{
+    int found = 0, choice;
+    for (int i = 0; i < index; i++)
+    {
+        if (strcmp(arr[i].department, dep) == 0)
+        {
+            printf("the student ID is %s\n", arr[i].Id);
+            printf("the  student name is %s %s\n", arr[i].FirstName, arr[i].LastName);
+            printf("the  student name is %s\n", arr[i].dateOfBirth);
+            printf("the student point is %d\n", arr[i].point);
+        }
+    }
+    if (found == 0)
+    {
+        printf("No students found in the %s department.\n", dep);
+    }
+    printf("Do you want to contenu? 1. Continue 2. Stop\n");
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+    {
+        system(CLEAR);
+        printf("You have entered a wrong choice. Please enter 1 or 2\n");
+        scanf("%d", &choice);
+    }
+
+    if (choice != 1)
+    {
+        exit(0);
     }
 }
 // reversed sort lower  to higher
@@ -267,7 +297,7 @@ void add_student(student arr[], int *index)
         for (int i = *index; i < *index + n; i++)
         {
             system(CLEAR);
-            printf("Enter the student's first name (Student #%d): ", counter + 1);
+            printf("Enter the student's first name Student #%d (DD/MM/YYYY): ", counter + 1);
             while (scanf(" %[^\n]s", arr[i].FirstName) != 1)
             {
                 getchar();
@@ -663,7 +693,7 @@ void editDelete(student arr[], int *index, int choice, char name[])
     }
 }
 // the function that show the Statistics
-Statistics(student arr[], int index, int choice)
+void Statistics(student arr[], int index, int choice)
 {
     system(CLEAR);
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
@@ -784,6 +814,28 @@ Statistics(student arr[], int index, int choice)
         break;
     }
 }
+// add 10 students in the bigening of the program
+void addSampleStudents(student arr[], int *index)
+{
+    // Sample data
+    const char *ids[] = {"S001", "S002", "S003", "S004", "S005", "S006", "S007", "S008", "S009", "S010"};
+    const char *firstNames[] = {"John", "Jane", "Alice", "Bob", "Charlie", "David", "Eva", "Fay", "George", "Hannah"};
+    const char *lastNames[] = {"Doe", "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore"};
+    const char *departments[] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    const char *dob[] = {"2000-01-01", "2000-02-01", "2000-03-01", "2000-04-01", "2000-05-01", "2000-06-01", "2000-07-01", "2000-08-01", "2000-09-01", "2000-10-01"};
+    int points[] = {12, 15, 10, 18, 14, 13, 17, 16, 19, 20};
+
+    for (int i = 0; i < 10; i++)
+    {
+        strcpy(arr[i].Id, ids[i]);
+        strcpy(arr[i].FirstName, firstNames[i]);
+        strcpy(arr[i].LastName, lastNames[i]);
+        strcpy(arr[i].department, departments[i % 8]); // Distribute departments cyclically
+        strcpy(arr[i].dateOfBirth, dob[i]);
+        arr[i].point = points[i];
+    }
+    *index = 10; // Update the index to reflect the number of students added
+}
 
 int main()
 {
@@ -791,9 +843,11 @@ int main()
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
     int depcount = 8;
     int choice, point, index = 0;
-
     char name[MAX_CHAR];
-    char dep[MAX_CHAR] = "empty";
+
+    // char name[MAX_CHAR]; I don't know when or why I used this variable , but it's not used anywhere in the code
+
+    addSampleStudents(students, &index);
 
     while (1)
     {
@@ -813,9 +867,9 @@ int main()
             printf("what do you  want to do?\n");
             printf("1. add student\n");
             printf("2. search student\n");
-            printf("3. students details\n");
-            printf("4. general average\n");
-            printf("5. edit/delet student\n");
+            printf("3. edit student\n");
+            printf("4. delete a student\n");
+            printf("5. general averag\n");
             printf("6. Statistics\n");
             printf("7. exit\n");
             scanf("%d", &choice);
@@ -871,7 +925,7 @@ int main()
                     scanf(" %[^\n]s", &name);
                 }
                 getchar();
-                searchStudent(students, index, name, choice);
+                showDepStudent(students, index, name);
                 break;
             }
             break;
@@ -925,13 +979,6 @@ int main()
             break;
         case 6:
             system(CLEAR);
-            printf("what do you know about the universcity ");
-
-            Statistics(students, index, choice);
-            break;
-        case 7:
-            system(CLEAR);
-            printf("thank you for using our application\n");
             printf("1. the total number of students enrolled.\n");
             printf("2. View the number of students in each department.\n");
             printf("3. Show the 3 students with the best grades.\n");
@@ -944,8 +991,11 @@ int main()
 
             return 0;
             break;
+        case 7:
+            system(CLEAR);
+            printf("thank you for using our application\n");
+            return 0;
+            break;
         }
-
-        break;
     }
 }
