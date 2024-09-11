@@ -13,18 +13,19 @@
 
 #define MAX_CHAR 256
 #define MAX_students 100000
+#define GENERATED_ID_LENGTH 25
 typedef struct sas
 {
     char Id[30];
     char FirstName[MAX_CHAR];
     char LastName[MAX_CHAR];
-    char dathOfBearth[MAX_CHAR];
+    char dateOfBirth[MAX_CHAR];
     char department[MAX_CHAR];
     int point;
 } student;
 
 // store a random ID
-char generatedID[29];
+char generatedID[GENERATED_ID_LENGTH];
 
 // convirt string to lower case
 void toLowerCase(char *str)
@@ -41,7 +42,7 @@ void printstudents(student arr[], int num)
     {
         printf("the  student %d id: is  %s\n", i, arr[i].Id);
         printf("the student %d name is %s %s\n", i, arr[i].FirstName, arr[i].LastName);
-        printf("the student  %d date of birth is %s\n", i, arr[i].dathOfBearth);
+        printf("the student  %d date of birth is %s\n", i, arr[i].dateOfBirth);
         printf("the student %d department is %s\n", i, arr[i].department);
         printf("the student %d point is %d\n", i, arr[i].point);
     }
@@ -55,16 +56,15 @@ char random_char(int index)
 }
 
 // genirate a random ID
-void genirateID()
+void generateID()
 {
-    srand(time(NULL));
     int i, index;
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < GENERATED_ID_LENGTH; i++)
     {
         index = rand() % 62;
         generatedID[i] = random_char(index);
     }
-    generatedID[16] = '\0';
+    generatedID[GENERATED_ID_LENGTH] = '\0'; // Null-terminate the string
 }
 
 // sort the the array with selection sort
@@ -76,7 +76,6 @@ void selectioSortpoint(student arr[], int n)
     {
         min_idx = i;
 
-        // Find the student with the minimum points in the unsorted part
         for (j = i + 1; j < n; j++)
         {
             if (arr[j].point < arr[min_idx].point)
@@ -85,7 +84,6 @@ void selectioSortpoint(student arr[], int n)
             }
         }
 
-        // If a smaller point is found, swap the entire student records
         if (min_idx != i)
         {
             // Swap the entire structure between arr[i] and arr[min_idx]
@@ -102,7 +100,7 @@ void selectioSort(student arr[], int n)
     for (i = 0; i < n - 1; i++)
     {
         min_idx = i;
-        // Find the minimum FirstName in the remaining unsorted part of the array
+
         for (j = i + 1; j < n; j++)
         {
             if (strcmp(arr[j].FirstName, arr[min_idx].FirstName) < 0)
@@ -110,68 +108,57 @@ void selectioSort(student arr[], int n)
                 min_idx = j;
             }
         }
-
-        // Swap the found minimum element with the first element
         if (min_idx != i)
         {
-            student temp = arr[i]; // Temporary struct to hold the current student
-            arr[i] = arr[min_idx]; // Swap arr[i] with arr[min_idx]
-            arr[min_idx] = temp;   // Place the original student in the min_idx position
+            student temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
         }
     }
 }
 
-void add_student(student arr[], int index, char departments[])
+void add_student(student arr[], int *index)
 {
     int choice, n;
     system(CLEAR);
-    printf("do you want to add student or mutiple studens\n 1.single student \n 2.multiple students");
+    printf("Do you want to add a single student or multiple students?\n 1. Single student \n 2. Multiple students\n");
 
-    while (scanf("%d", &choice) != 1)
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
     {
-        printf("Invalid input. Please enter a number.\n");
+        printf("Invalid input. Please enter 1 or 2.\n");
         system(CLEAR);
-        scanf("%d", choice);
+        scanf("%d", &choice);
     }
+
     switch (choice)
     {
-        // add only one student
     case 1:
-        printf("what is the student first name:");
-        while (scanf(" %[^\n]s", arr[index].FirstName) != 1)
+    { // Add only one student
+        printf("Enter the student's first name: ");
+        while (scanf(" %[^\n]s", arr[*index].FirstName) != 1)
         {
             getchar();
-            printf("invalid first name\n");
-            scanf(" %[^\n]s", arr[index].FirstName);
-            toLowerCase(arr[index].FirstName);
+            printf("Invalid first name. Re-enter: ");
         }
-        toLowerCase(arr[index].FirstName);
-        getchar();
-        sleep(1);
-        printf("what is the student last name:");
-        while (scanf(" %[^\n]s", arr[index].LastName) != 1)
+        toLowerCase(arr[*index].FirstName);
+
+        printf("Enter the student's last name: ");
+        while (scanf(" %[^\n]s", arr[*index].LastName) != 1)
         {
             getchar();
-            printf("invalid last name \n");
-            printf("reenter the last name \n");
-            scanf(" %[^\n]s", arr[index].LastName);
-            toLowerCase(arr[index].LastName);
+            printf("Invalid last name. Re-enter: ");
         }
-        toLowerCase(arr[index].LastName);
-        getchar();
-        sleep(1);
-        printf("what is the student date of birth:");
-        while (scanf(" %[^\n]s", arr[index].dathOfBearth) != 1)
+        toLowerCase(arr[*index].LastName);
+
+        printf("Enter the student's date of birth (DD/MM/YYYY): ");
+        while (scanf(" %[^\n]s", arr[*index].dateOfBirth) != 1)
         {
             getchar();
-            printf("invalid input\n");
-            scanf(" %[^\n]s", arr[index].dathOfBearth);
-            toLowerCase(arr[index].dathOfBearth);
+            printf("Invalid date of birth. Re-enter: ");
         }
-        toLowerCase(arr[index].dathOfBearth);
-        getchar();
-        sleep(1);
-        printf("printf  what is the student department:\n");
+
+        // Print department choices explicitly
+        printf("What is the student's department:\n");
         printf("1. Computer Science\n");
         printf("2. Mathematics\n");
         printf("3. Physics\n");
@@ -180,77 +167,71 @@ void add_student(student arr[], int index, char departments[])
         printf("6. Economics\n");
         printf("7. Psychology\n");
         printf("8. Engineering\n");
-        while (scanf("%d", &choice) != 1 || choice <= 1 || choice >= 8)
-        {
-            printf("invalid choice\n");
-            printf("reenter the choice\n");
-            scanf("%d", &choice);
-        }
-        strcpy(arr[index].department, departments[choice]);
-        printf("printf  what is the student point:\n");
-        while (scanf("%d", arr[index].point) != 1)
-        {
-            printf("invalid input\n");
-            scanf("%d", &arr[index].point);
-        }
-        strcpy(arr[index].Id, generatedID);
-        ++index;
-        printf("you have added a student to the list do you want to contenu:1.contenu \n 2.stop ");
-        scanf("%s", &choice);
-        if (choice != 1)
-        {
-            exit(0);
-        }
-        break;
-        // add more than one student
-    case 2:
-        int counter = 0;
-        printf("how may do you want to add");
 
-        while (scanf("%d", &n) != 1)
+        while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8)
         {
-            printf("invalid input\n");
-            scanf("%d", &n);
+            printf("Invalid choice. Re-enter the choice: ");
         }
-        for (int i = index; i < index + n; i++)
+
+        // Array of department strings to map the choice to department name
+        char departments[][30] = {
+            "Computer Science", "Mathematics", "Physics",
+            "Chemistry", "Biology", "Economics",
+            "Psychology", "Engineering"};
+
+        strcpy(arr[*index].department, departments[choice - 1]);
+
+        printf("Enter the student's points: ");
+        while (scanf("%d", &arr[*index].point) != 1)
+        {
+            printf("Invalid input. Re-enter the points: ");
+        }
+        genirateID();
+        strcpy(arr[*index].Id, generatedID);
+
+        (*index)++; // Increment index after adding the student
+
+        printf("You have successfully added the student!\n");
+        break;
+    }
+
+    case 2:
+    { // Add multiple students
+        int counter = 0;
+        printf("How many students do you want to add? ");
+        while (scanf("%d", &n) != 1 || n <= 0)
+        {
+            printf("Invalid input. Re-enter: ");
+        }
+
+        for (int i = *index; i < *index + n; i++)
         {
             system(CLEAR);
-            printf("what is the student first name: number %d", counter);
+            printf("Enter the student's first name (Student #%d): ", counter + 1);
             while (scanf(" %[^\n]s", arr[i].FirstName) != 1)
             {
                 getchar();
-                printf("invalid first name\n");
-                scanf(" %[^\n]s", arr[i].FirstName);
-                toLowerCase(arr[index].FirstName);
+                printf("Invalid first name. Re-enter: ");
             }
-            toLowerCase(arr[index].FirstName);
-            getchar();
-            sleep(1);
-            printf("what is the student last name: number %d", counter);
+            toLowerCase(arr[i].FirstName);
 
+            printf("Enter the student's last name (Student #%d): ", counter + 1);
             while (scanf(" %[^\n]s", arr[i].LastName) != 1)
             {
                 getchar();
-                printf("invalid last name \n");
-                printf("reenter the last name \n");
-                scanf(" %[^\n]s", arr[i].LastName);
-                toLowerCase(arr[index].LastName);
+                printf("Invalid last name. Re-enter: ");
             }
-            toLowerCase(arr[index].LastName);
-            getchar();
-            sleep(1);
-            printf("what is the student date of birth: number %d", counter);
+            toLowerCase(arr[i].LastName);
 
-            while (scanf(" %[^\n]s", arr[i].dathOfBearth) != 1)
+            printf("Enter the student's date of birth (Student #%d): ", counter + 1);
+            while (scanf(" %[^\n]s", arr[i].dateOfBirth) != 1)
             {
                 getchar();
-                printf("invalid input\n");
-                scanf(" %[^\n]s", arr[i].dathOfBearth);
-                toLowerCase(arr[index].dathOfBearth);
+                printf("Invalid date of birth. Re-enter: ");
             }
-            getchar();
-            sleep(1);
-            printf("printf  what is the student department:\n");
+
+            // Print department choices explicitly
+            printf("What is the student's department (Student #%d):\n", counter + 1);
             printf("1. Computer Science\n");
             printf("2. Mathematics\n");
             printf("3. Physics\n");
@@ -259,32 +240,36 @@ void add_student(student arr[], int index, char departments[])
             printf("6. Economics\n");
             printf("7. Psychology\n");
             printf("8. Engineering\n");
-            while (scanf("%d", &choice) != 1 || choice <= 1 || choice >= 8)
-            {
-                printf("invalid choice\n");
-                printf("reenter the choice\n");
-                scanf("%d", &choice);
-            }
-            strcpy(arr[i].department, departments[choice]);
-            printf("printf  what is the student point:number %d,counter \n");
 
-            while (scanf("%d", arr[i].point) != 1)
+            while (scanf("%d", &choice) != 1 || choice < 1 || choice > 8)
             {
-                printf("invalid input\n");
-                scanf("%d", &arr[i].point);
+                printf("Invalid choice. Re-enter the choice: ");
             }
-            ++counter;
-            strcpy(arr[i].Id, generatedID);
+
+            // Array of department strings to map the choice to department name
+            char departments[][30] = {
+                "Computer Science", "Mathematics", "Physics",
+                "Chemistry", "Biology", "Economics",
+                "Psychology", "Engineering"};
+
+            strcpy(arr[i].department, departments[choice - 1]);
+
+            printf("Enter the student's points (Student #%d): ", counter + 1);
+            while (scanf("%d", &arr[i].point) != 1)
+            {
+                printf("Invalid input. Re-enter: ");
+            }
+
+            // Generate a simple student ID
+            genirateID();
+            strcpy(arr[*index].Id, generatedID);
+
+            counter++;
         }
-        printf("all of the students wher added\n");
-        printf("do you whant to continu\n");
-        printf("all the sudents to the list do you want to contenu:1.contenu \n 2.stop ");
-        scanf("%s", &choice);
-        if (choice != 1)
-        {
-            exit(0);
-        }
+        (*index) += n;
+        printf("All students were successfully added!\n");
         break;
+    }
     }
 }
 void searchStudent(student arr[], int index, char name[], int choice)
@@ -387,7 +372,7 @@ void searchStudent(student arr[], int index, char name[], int choice)
 int main()
 {
     student students[MAX_students];
-    char departments[] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
     int choice, point, index = 0;
 
     char name[MAX_CHAR];
@@ -419,7 +404,7 @@ int main()
         switch (choice)
         {
         case 1:
-            add_student(students, index, departments);
+            add_student(students, index);
             break;
         case 2:
             printf("do you wnat to  search by 1.name or 2. id?\n");
