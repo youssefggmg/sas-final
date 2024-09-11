@@ -4,7 +4,6 @@
 #include <time.h>
 #include <ctype.h>
 #include <unistd.h>
-#include <windows.h>
 
 #ifdef _WIN32
 #define CLEAR "cls"
@@ -35,6 +34,18 @@ void toLowerCase(char *str)
         str[i] = tolower(str[i]);
     }
 }
+void printstudents(student arr[], int num)
+{
+    system(CLEAR);
+    for (int i = 0; i < num; i++)
+    {
+        printf("the  student %d id: is  %s\n", i, arr[i].Id);
+        printf("the student %d name is %s %s\n", i, arr[i].FirstName, arr[i].LastName);
+        printf("the student  %d date of birth is %s\n", i, arr[i].dathOfBearth);
+        printf("the student %d department is %s\n", i, arr[i].department);
+        printf("the student %d point is %d\n", i, arr[i].point);
+    }
+}
 
 // select a random charecter for the ID
 char random_char(int index)
@@ -61,25 +72,26 @@ void genirateID()
 void selectioSortpoint(student arr[], int n)
 {
     int i, j, min_idx;
-    int minpoint;
     for (i = 0; i < n - 1; i++)
     {
         min_idx = i;
-        minpoint = arr[i].point;
-        for (j = 0; j < n; j++)
+
+        // Find the student with the minimum points in the unsorted part
+        for (j = i + 1; j < n; j++)
         {
-            if (arr[i].point > arr[j].point)
+            if (arr[j].point < arr[min_idx].point)
             {
-                min_idx=j;
+                min_idx = j;
             }
-            if (min_idx!=i)
-            {
-                int temp;
-                temp = arr[i].point;
-                arr[i].point = arr[min_idx].point;
-                arr[min_idx].point = temp;
-            }
-            
+        }
+
+        // If a smaller point is found, swap the entire student records
+        if (min_idx != i)
+        {
+            // Swap the entire structure between arr[i] and arr[min_idx]
+            student temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
         }
     }
 }
@@ -87,25 +99,24 @@ void selectioSortpoint(student arr[], int n)
 void selectioSort(student arr[], int n)
 {
     int i, j, min_idx;
-    char minchar[MAX_CHAR];
-    for (i = 0; i < n; i++)
+    for (i = 0; i < n - 1; i++)
     {
         min_idx = i;
-        strcpy(minchar, arr[i].FirstName);
+        // Find the minimum FirstName in the remaining unsorted part of the array
         for (j = i + 1; j < n; j++)
         {
-            if (strcmp(minchar, arr[j].FirstName) > 0)
+            if (strcmp(arr[j].FirstName, arr[min_idx].FirstName) < 0)
             {
-                strcpy(minchar, arr[j].FirstName);
                 min_idx = j;
             }
-            if (min_idx != i)
-            {
-                char temp[MAX_CHAR];
-                strcpy(temp, arr[i].FirstName);
-                strcpy(arr[i].FirstName, arr[min_idx].FirstName);
-                strcpy(arr[min_idx].FirstName, temp);
-            }
+        }
+
+        // Swap the found minimum element with the first element
+        if (min_idx != i)
+        {
+            student temp = arr[i]; // Temporary struct to hold the current student
+            arr[i] = arr[min_idx]; // Swap arr[i] with arr[min_idx]
+            arr[min_idx] = temp;   // Place the original student in the min_idx position
         }
     }
 }
@@ -276,6 +287,42 @@ void add_student(student arr[], int index, char departments[])
         break;
     }
 }
+void searchStudent(student arr[], int index, char name[])
+{
+    int left = 0, right, mid, size = index - 1, choice;
+    printstudents(arr, index);
+
+    while (left <= right)
+    {
+        mid = (left + right) / 2;
+        int compair = strcmp(arr[mid].FirstName, name);
+        if (compair == 0)
+        {
+            system(CLEAR);
+            printf("we have founde the student");
+            printf("student ID is : %s", arr[mid].Id);
+            printf("student first name:%s\n", arr[mid].FirstName);
+            printf("student last name:%s\n", arr[mid].LastName);
+            printf("student department:%s\n", arr[mid].department);
+            printf("student point:%d\n", arr[mid].point);
+            printf("do  you whant to search another student:1.continue 2.stop");
+            while (scanf("%d", &choice) != 1 || choice != 1, choice != 2)
+            {
+                system(CLEAR);
+                printf("you have entere a wrong choice . please enter 1 or 2\n");
+                scanf("%d", &choice);
+            }
+        }
+        else if (compair < 0)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+}
 
 int main()
 {
@@ -283,7 +330,7 @@ int main()
     char departments[] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
     int choice, point, index = 0;
 
-    char search[MAX_CHAR];
+    char name[MAX_CHAR];
 
     while (1)
     {
@@ -291,10 +338,11 @@ int main()
         printf("what do you  want to do?\n");
         printf("1. add student\n");
         printf("2. search student\n");
-        printf("3. students details\n");
-        printf("4. general average\n");
-        printf("5. Statistics\n");
-        printf("6. exit\n");
+        printf("3. edit student\n");
+        printf("4. delete a student\n");
+        printf("5. general averag\n");
+        printf("6. Statistics\n");
+        printf("7. exit\n");
         while (scanf("%d", &choice) != 1)
         {
             system(CLEAR);
@@ -314,6 +362,16 @@ int main()
             add_student(students, index, departments);
             break;
         case 2:
+            printstudents(students, index);
+            printf("who is the student that you'r looking for ?\n");
+            while (scanf(" %[^\n]s", &name) != 1)
+            {
+                getchar();
+                printf("invalid input\n");
+                scanf(" %[^\n]s", &name);
+            }
+            getchar();
+            searchStudent(students, index, name);
             break;
         }
     }
