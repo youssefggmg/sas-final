@@ -58,6 +58,32 @@ void genirateID()
 
 // sort the the array with selection sort
 
+void selectioSortpoint(student arr[], int n)
+{
+    int i, j, min_idx;
+    int minpoint;
+    for (i = 0; i < n - 1; i++)
+    {
+        min_idx = i;
+        minpoint = arr[i].point;
+        for (j = 0; j < n; j++)
+        {
+            if (arr[i].point > arr[j].point)
+            {
+                min_idx=j;
+            }
+            if (min_idx!=i)
+            {
+                int temp;
+                temp = arr[i].point;
+                arr[i].point = arr[min_idx].point;
+                arr[min_idx].point = temp;
+            }
+            
+        }
+    }
+}
+
 void selectioSort(student arr[], int n)
 {
     int i, j, min_idx;
@@ -65,8 +91,9 @@ void selectioSort(student arr[], int n)
     for (i = 0; i < n; i++)
     {
         min_idx = i;
-        strcpy(minchar,arr[i].FirstName);
-        for (j = i + 1; j < n; j++){
+        strcpy(minchar, arr[i].FirstName);
+        for (j = i + 1; j < n; j++)
+        {
             if (strcmp(minchar, arr[j].FirstName) > 0)
             {
                 strcpy(minchar, arr[j].FirstName);
@@ -75,16 +102,13 @@ void selectioSort(student arr[], int n)
             if (min_idx != i)
             {
                 char temp[MAX_CHAR];
-                strcpy(temp,arr[i].FirstName);
-                strcpy(arr[i].FirstName,arr[min_idx].FirstName);
-                strcpy(arr[min_idx].FirstName,temp);
+                strcpy(temp, arr[i].FirstName);
+                strcpy(arr[i].FirstName, arr[min_idx].FirstName);
+                strcpy(arr[min_idx].FirstName, temp);
             }
-            
         }
     }
 }
-
-
 
 void add_student(student arr[], int index, char departments[])
 {
