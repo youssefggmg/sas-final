@@ -287,40 +287,100 @@ void add_student(student arr[], int index, char departments[])
         break;
     }
 }
-void searchStudent(student arr[], int index, char name[])
+void searchStudent(student arr[], int index, char name[], int choice)
 {
-    int left = 0, right, mid, size = index - 1, choice;
-    printstudents(arr, index);
+    int left = 0, right = index - 1, mid, compair;
+    char searchId[MAX_CHAR];
 
-    while (left <= right)
+    printstudents(arr, index); // Print all students (assuming this function exists)
+
+    if (choice == 1) // Search by FirstName
     {
-        mid = (left + right) / 2;
-        int compair = strcmp(arr[mid].FirstName, name);
-        if (compair == 0)
+        while (left <= right)
         {
-            system(CLEAR);
-            printf("we have founde the student");
-            printf("student ID is : %s", arr[mid].Id);
-            printf("student first name:%s\n", arr[mid].FirstName);
-            printf("student last name:%s\n", arr[mid].LastName);
-            printf("student department:%s\n", arr[mid].department);
-            printf("student point:%d\n", arr[mid].point);
-            printf("do  you whant to search another student:1.continue 2.stop");
-            while (scanf("%d", &choice) != 1 || choice != 1, choice != 2)
+            mid = (left + right) / 2;
+            compair = strcmp(arr[mid].FirstName, name);
+            if (compair == 0)
             {
                 system(CLEAR);
-                printf("you have entere a wrong choice . please enter 1 or 2\n");
-                scanf("%d", &choice);
+                printf("We have found the student:\n");
+                printf("Student ID: %s\n", arr[mid].Id);
+                printf("Student First Name: %s\n", arr[mid].FirstName);
+                printf("Student Last Name: %s\n", arr[mid].LastName);
+                printf("Student Department: %s\n", arr[mid].department);
+                printf("Student Point: %d\n", arr[mid].point);
+                break;
+            }
+            else if (compair < 0)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
             }
         }
-        else if (compair < 0)
+    }
+    else if (choice == 2) // Search by ID
+    {
+        printf("Enter the student ID to search: ");
+        scanf("%s", searchId);
+
+        left = 0;
+        right = index - 1;
+        while (left <= right)
         {
-            left = mid + 1;
+            mid = (left + right) / 2;
+            compair = strcmp(arr[mid].Id, searchId);
+            if (compair == 0)
+            {
+                system(CLEAR);
+                printf("We have found the student:\n");
+                printf("Student ID: %s\n", arr[mid].Id);
+                printf("Student First Name: %s\n", arr[mid].FirstName);
+                printf("Student Last Name: %s\n", arr[mid].LastName);
+                printf("Student Department: %s\n", arr[mid].department);
+                printf("Student Point: %d\n", arr[mid].point);
+                break;
+            }
+            else if (compair < 0)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
         }
-        else
-        {
-            right = mid - 1;
-        }
+    }
+    else
+    {
+        printf("Invalid search choice.\n");
+        return;
+    }
+
+    // If student is not found
+    if (left > right)
+    {
+        printf("Student not found.\n");
+    }
+
+    printf("Do you want to search for another student? 1. Continue 2. Stop\n");
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+    {
+        system(CLEAR);
+        printf("You have entered a wrong choice. Please enter 1 or 2\n");
+        scanf("%d", &choice);
+    }
+
+    if (choice == 1)
+    {
+        system(CLEAR);
+        // Call the function again or reset the search (depending on your design)
+    }
+    else
+    {
+        exit(0);
     }
 }
 
@@ -343,7 +403,7 @@ int main()
         printf("5. general averag\n");
         printf("6. Statistics\n");
         printf("7. exit\n");
-        while (scanf("%d", &choice) != 1)
+        while (scanf("%d", &choice) != 1 || choice < 1 || choice > 7)
         {
             system(CLEAR);
             printf("Invalid input. Please enter a number.\n");
@@ -362,16 +422,39 @@ int main()
             add_student(students, index, departments);
             break;
         case 2:
-            printstudents(students, index);
-            printf("who is the student that you'r looking for ?\n");
-            while (scanf(" %[^\n]s", &name) != 1)
+            printf("do you wnat to  search by 1.name or 2. id?\n");
+            while (scanf("%d", &choice) != 1 || choice < 1 || choice > 7)
             {
-                getchar();
-                printf("invalid input\n");
-                scanf(" %[^\n]s", &name);
+                system(CLEAR);
+                printf("Invalid input. Please  1.name or 2. id.\n");
+                scanf("%d", &choice);
             }
-            getchar();
-            searchStudent(students, index, name);
+            switch (choice)
+            {
+            case 1:
+                printstudents(students, index);
+                printf("who is the student that you'r looking for ?\n");
+                while (scanf(" %[^\n]s", &name) != 1)
+                {
+                    getchar();
+                    printf("invalid input\n");
+                    scanf(" %[^\n]s", &name);
+                }
+                getchar();
+                break;
+            case 2:
+                printstudents(students, index);
+                printf("who is the student that you'r looking for ?\n");
+                while (scanf(" %[^\n]s", &name) != 1)
+                {
+                    getchar();
+                    printf("invalid input\n");
+                    scanf(" %[^\n]s", &name);
+                }
+                getchar();
+                break;
+            }
+            searchStudent(students, index, name, choice);
             break;
         }
     }
