@@ -23,22 +23,68 @@ typedef struct sas
     char department[MAX_CHAR];
     int point;
 } student;
-char generatedID[29]; 
 
-char random_char(int index) {
+// store a random ID
+char generatedID[29];
+
+// convirt string to lower case
+void toLowerCase(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        str[i] = tolower(str[i]);
+    }
+}
+
+// select a random charecter for the ID
+char random_char(int index)
+{
     char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     return charset[index];
 }
 
-void genirateID() {
-    srand(time(NULL)); 
+// genirate a random ID
+void genirateID()
+{
+    srand(time(NULL));
     int i, index;
-    for (i = 0; i < 16; i++) { 
+    for (i = 0; i < 16; i++)
+    {
         index = rand() % 62;
         generatedID[i] = random_char(index);
     }
-    generatedID[16] = '\0'; 
+    generatedID[16] = '\0';
 }
+
+// sort the the array with selection sort
+
+void selectioSort(student arr[], int n)
+{
+    int i, j, min_idx;
+    char minchar[MAX_CHAR];
+    for (i = 0; i < n; i++)
+    {
+        min_idx = i;
+        strcpy(minchar,arr[i].FirstName);
+        for (j = i + 1; j < n; j++){
+            if (strcmp(minchar, arr[j].FirstName) > 0)
+            {
+                strcpy(minchar, arr[j].FirstName);
+                min_idx = j;
+            }
+            if (min_idx != i)
+            {
+                char temp[MAX_CHAR];
+                strcpy(temp,arr[i].FirstName);
+                strcpy(arr[i].FirstName,arr[min_idx].FirstName);
+                strcpy(arr[min_idx].FirstName,temp);
+            }
+            
+        }
+    }
+}
+
+
 
 void add_student(student arr[], int index, char departments[])
 {
@@ -62,7 +108,9 @@ void add_student(student arr[], int index, char departments[])
             getchar();
             printf("invalid first name\n");
             scanf(" %[^\n]s", arr[index].FirstName);
+            toLowerCase(arr[index].FirstName);
         }
+        toLowerCase(arr[index].FirstName);
         getchar();
         sleep(1);
         printf("what is the student last name:");
@@ -72,7 +120,9 @@ void add_student(student arr[], int index, char departments[])
             printf("invalid last name \n");
             printf("reenter the last name \n");
             scanf(" %[^\n]s", arr[index].LastName);
+            toLowerCase(arr[index].LastName);
         }
+        toLowerCase(arr[index].LastName);
         getchar();
         sleep(1);
         printf("what is the student date of birth:");
@@ -81,7 +131,9 @@ void add_student(student arr[], int index, char departments[])
             getchar();
             printf("invalid input\n");
             scanf(" %[^\n]s", arr[index].dathOfBearth);
+            toLowerCase(arr[index].dathOfBearth);
         }
+        toLowerCase(arr[index].dathOfBearth);
         getchar();
         sleep(1);
         printf("printf  what is the student department:\n");
@@ -106,7 +158,7 @@ void add_student(student arr[], int index, char departments[])
             printf("invalid input\n");
             scanf("%d", &arr[index].point);
         }
-        strcpy(arr[index].Id,generatedID);
+        strcpy(arr[index].Id, generatedID);
         ++index;
         printf("you have added a student to the list do you want to contenu:1.contenu \n 2.stop ");
         scanf("%s", &choice);
@@ -134,7 +186,9 @@ void add_student(student arr[], int index, char departments[])
                 getchar();
                 printf("invalid first name\n");
                 scanf(" %[^\n]s", arr[i].FirstName);
+                toLowerCase(arr[index].FirstName);
             }
+            toLowerCase(arr[index].FirstName);
             getchar();
             sleep(1);
             printf("what is the student last name: number %d", counter);
@@ -145,7 +199,9 @@ void add_student(student arr[], int index, char departments[])
                 printf("invalid last name \n");
                 printf("reenter the last name \n");
                 scanf(" %[^\n]s", arr[i].LastName);
+                toLowerCase(arr[index].LastName);
             }
+            toLowerCase(arr[index].LastName);
             getchar();
             sleep(1);
             printf("what is the student date of birth: number %d", counter);
@@ -155,6 +211,7 @@ void add_student(student arr[], int index, char departments[])
                 getchar();
                 printf("invalid input\n");
                 scanf(" %[^\n]s", arr[i].dathOfBearth);
+                toLowerCase(arr[index].dathOfBearth);
             }
             getchar();
             sleep(1);
@@ -182,7 +239,7 @@ void add_student(student arr[], int index, char departments[])
                 scanf("%d", &arr[i].point);
             }
             ++counter;
-            strcpy(arr[i].Id,generatedID);
+            strcpy(arr[i].Id, generatedID);
         }
         printf("all of the students wher added\n");
         printf("do you whant to continu\n");
