@@ -38,13 +38,18 @@ void toLowerCase(char *str)
 void printstudents(student arr[], int num)
 {
     system(CLEAR);
+    printf("Student List:\n");
+    printf("---------------\n");
+
     for (int i = 0; i < num; i++)
     {
-        printf("the  student %d id: is  %s\n", i, arr[i].Id);
-        printf("the student %d name is %s %s\n", i, arr[i].FirstName, arr[i].LastName);
-        printf("the student  %d date of birth is %s\n", i, arr[i].dateOfBirth);
-        printf("the student %d department is %s\n", i, arr[i].department);
-        printf("the student %d point is %d\n", i, arr[i].point);
+        printf("Student #%d\n", i + 1); 
+        printf("  ID:           %s\n", arr[i].Id);
+        printf("  Name:         %s %s\n", arr[i].FirstName, arr[i].LastName);
+        printf("  Date of Birth: %s\n", arr[i].dateOfBirth);
+        printf("  Department:   %s\n", arr[i].department);
+        printf("  Points:       %d\n", arr[i].point);
+        printf("---------------\n");
     }
 }
 
@@ -483,7 +488,8 @@ int main()
             }
 
             break;
-            case 4:
+        case 4:
+
             break;
         }
 
