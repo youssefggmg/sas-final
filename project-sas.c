@@ -768,23 +768,48 @@ void Statistics(student arr[], int index, int num)
         break;
     case 3:
         system(CLEAR);
-        selectioSortpoint(arr, index);
-        printf("top 3 students  in each department are :\n");
+    int choice;
+    char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    int depnum = 8;
+
+    switch (num)
+    {
+    case 3:
+        system(CLEAR);
+        // Assuming `selectioSortpoint` sorts students by points in descending order
+        selectioSortpoint(arr, index);  // This should sort the entire array
+
+        printf("Top 3 students in each department are:\n");
         for (int i = 0; i < depnum; i++)
         {
-            printf(" department  : %s\n", departments[i]);
-            for (int j = 0; j < 3; j++)
+            printf("Department: %s\n", departments[i]);
+            int count = 0;
+
+            // Loop through students to print top 3 in the current department
+            for (int j = 0; j < index; j++)
             {
-                printf("the student number %d in the departmet %s is %s %s \n", j + 1, departments[i], arr[j].FirstName, arr[j].LastName);
+                if (strcmp(arr[j].department, departments[i]) == 0)
+                {
+                    if (count < 3)  // Only print the top 3 students
+                    {
+                        printf("The student number %d in the department %s is %s %s\n", count + 1, departments[i], arr[j].FirstName, arr[j].LastName);
+                        count++;
+                    }
+                }
+            }
+            if (count == 0) {
+                printf("No students found in this department.\n");
             }
             printf("############################################\n");
         }
-        printf("Do you want to contenu? 1. Continue 2. Stop\n");
+
+        printf("Do you want to continue? 1. Continue 2. Stop\n");
         while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
         {
             system(CLEAR);
             printf("You have entered a wrong choice. Please enter 1 or 2\n");
-            scanf("%d", &choice);
+            // Clear input buffer
+            while (getchar() != '\n');
         }
 
         if (choice != 1)
