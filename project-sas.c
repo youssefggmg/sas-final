@@ -721,6 +721,7 @@ void Statistics(student arr[], int index, int num)
     switch (num)
     {
     case 1:
+        printf("you have %d students\n", index);
         printf("Do you want to contenu? 1. Continue 2. Stop\n");
         while (scanf("%d", &choice) != 1)
         {
@@ -728,14 +729,15 @@ void Statistics(student arr[], int index, int num)
             printf("You have entered a wrong choice. Please enter 1 or 2\n");
             scanf("%d", &choice);
         }
-        // now it's workes 
+        // now it's workes
         if (choice != 1)
         {
             exit(0);
         }
         else
         {
-            break;;   
+            break;
+            ;
         }
         break;
     case 2:
@@ -773,9 +775,9 @@ void Statistics(student arr[], int index, int num)
             printf(" department  : %s\n", departments[i]);
             for (int j = 0; j < 3; j++)
             {
-                printf("the student number %d in the departmet %s is %s %s", j, departments[i], arr[j].FirstName, arr[j].LastName);
+                printf("the student number %d in the departmet %s is %s %s \n", j + 1, departments[i], arr[j].FirstName, arr[j].LastName);
             }
-            printf("############################################");
+            printf("############################################\n");
         }
         printf("Do you want to contenu? 1. Continue 2. Stop\n");
         while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
