@@ -817,24 +817,29 @@ void Statistics(student arr[], int index, int choice)
 // add 10 students in the bigening of the program
 void addSampleStudents(student arr[], int *index)
 {
-    // Sample data
-    const char *ids[] = {"S001", "S002", "S003", "S004", "S005", "S006", "S007", "S008", "S009", "S010"};
-    const char *firstNames[] = {"John", "Jane", "Alice", "Bob", "Charlie", "David", "Eva", "Fay", "George", "Hannah"};
-    const char *lastNames[] = {"Doe", "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore"};
-    const char *departments[] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
-    const char *dob[] = {"2000-01-01", "2000-02-01", "2000-03-01", "2000-04-01", "2000-05-01", "2000-06-01", "2000-07-01", "2000-08-01", "2000-09-01", "2000-10-01"};
-    int points[] = {12, 15, 10, 18, 14, 13, 17, 16, 19, 20};
+    // String arrays for predefined student data
+    char ids[10][5] = {"S001", "S002", "S003", "S004", "S005","S006", "S007", "S008", "S009", "S010"};
+
+    char firstNames[10][10] = {"John", "Jane", "Alice", "Bob", "Charlie","David", "Eva", "Fay", "George", "Hannah"};
+
+    char lastNames[10][10] = {"Doe", "Smith", "Johnson", "Williams", "Jones","Brown", "Davis", "Miller", "Wilson", "Moore"};
+
+    char departments[10][20] = {"Computer Science", "Mathematics", "Physics", "Chemistry","Biology", "Economics", "Psychology", "Engineering","Mathematics", "Physics"};
+
+    char dob[10][11] = {"2000-01-01", "2000-02-01", "2000-03-01", "2000-04-01","2000-05-01", "2000-06-01", "2000-07-01", "2000-08-01","2000-09-01", "2000-10-01"};
+
+    int points[10] = {12, 15, 10, 18, 14, 13, 17, 16, 19, 20};
 
     for (int i = 0; i < 10; i++)
     {
-        strcpy(arr[i].Id, ids[i]);
-        strcpy(arr[i].FirstName, firstNames[i]);
-        strcpy(arr[i].LastName, lastNames[i]);
-        strcpy(arr[i].department, departments[i % 8]); // Distribute departments cyclically
-        strcpy(arr[i].dateOfBirth, dob[i]);
-        arr[i].point = points[i];
+        strcpy(arr[*index].Id, ids[i]);
+        strcpy(arr[*index].FirstName, firstNames[i]);
+        strcpy(arr[*index].LastName, lastNames[i]);
+        strcpy(arr[*index].department, departments[i]);
+        strcpy(arr[*index].dateOfBirth, dob[i]);
+        arr[*index].point = points[i];
+        (*index)++;
     }
-    *index = 10; // Update the index to reflect the number of students added
 }
 
 int main()
