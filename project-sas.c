@@ -476,23 +476,42 @@ void searchStudent(student arr[], int index, char name[], int choice)
 void geniralavrege(student arr[], int index, int numberOfDeps)
 {
     system(CLEAR);
-    // used this methos instand of geving it as an argument becouse the last one made a lot of problems
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
+    int choice;
 
+    // Loop through each department
     for (int i = 0; i < numberOfDeps; i++)
     {
         int sum = 0;
         int count = 0;
-
         for (int j = 0; j < index; j++)
         {
-            if (strcmp(arr[j].department, departments[i - 1]) == 0)
+            if (strcmp(arr[j].department, departments[i]) == 0)
             {
                 sum += arr[j].point;
                 count++;
             }
         }
-        printf("the avrege points of the %s department is  %d\n", departments[i - 1], sum / count);
+        if (count > 0)
+        {
+            printf("The average points of the %s department is: %.2f\n", departments[i], (float)sum / count);
+        }
+        else
+        {
+            // If no students were found in the department
+            printf("No students in the %s department.\n", departments[i]);
+        }
+    }
+    printf("Do you want to contenu? 1. Continue 2. Stop\n");
+    while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+    {
+        system(CLEAR);
+        printf("You have entered a wrong choice. Please enter 1 or 2\n");
+    }
+
+    if (choice != 1)
+    {
+        exit(0);
     }
 }
 
@@ -693,26 +712,30 @@ void editDelete(student arr[], int *index, int choice, char name[])
     }
 }
 // the function that show the Statistics
-void Statistics(student arr[], int index, int choice)
+void Statistics(student arr[], int index, int num)
 {
     system(CLEAR);
+    int choice;
     char departments[][30] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering"};
     int depnum = 8;
-    switch (choice)
+    switch (num)
     {
     case 1:
-        printf("you have  %d students\n", index);
         printf("Do you want to contenu? 1. Continue 2. Stop\n");
-        while (scanf("%d", &choice) != 1 || (choice != 1 && choice != 2))
+        while (scanf("%d", &choice) != 1)
         {
             system(CLEAR);
             printf("You have entered a wrong choice. Please enter 1 or 2\n");
             scanf("%d", &choice);
         }
-
+        // now it's workes 
         if (choice != 1)
         {
             exit(0);
+        }
+        else
+        {
+            break;;   
         }
         break;
     case 2:
@@ -818,15 +841,15 @@ void Statistics(student arr[], int index, int choice)
 void addSampleStudents(student arr[], int *index)
 {
     // String arrays for predefined student data
-    char ids[10][5] = {"S001", "S002", "S003", "S004", "S005","S006", "S007", "S008", "S009", "S010"};
+    char ids[10][5] = {"S001", "S002", "S003", "S004", "S005", "S006", "S007", "S008", "S009", "S010"};
 
-    char firstNames[10][10] = {"John", "Jane", "Alice", "Bob", "Charlie","David", "Eva", "Fay", "George", "Hannah"};
+    char firstNames[10][10] = {"John", "Jane", "Alice", "Bob", "Charlie", "David", "Eva", "Fay", "George", "Hannah"};
 
-    char lastNames[10][10] = {"Doe", "Smith", "Johnson", "Williams", "Jones","Brown", "Davis", "Miller", "Wilson", "Moore"};
+    char lastNames[10][10] = {"Doe", "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore"};
 
-    char departments[10][20] = {"Computer Science", "Mathematics", "Physics", "Chemistry","Biology", "Economics", "Psychology", "Engineering","Mathematics", "Physics"};
+    char departments[10][20] = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Economics", "Psychology", "Engineering", "Mathematics", "Physics"};
 
-    char dob[10][11] = {"2000-01-01", "2000-02-01", "2000-03-01", "2000-04-01","2000-05-01", "2000-06-01", "2000-07-01", "2000-08-01","2000-09-01", "2000-10-01"};
+    char dob[10][11] = {"2000-01-01", "2000-02-01", "2000-03-01", "2000-04-01", "2000-05-01", "2000-06-01", "2000-07-01", "2000-08-01", "2000-09-01", "2000-10-01"};
 
     int points[10] = {12, 15, 10, 18, 14, 13, 17, 16, 19, 20};
 
@@ -994,7 +1017,7 @@ int main()
             }
             Statistics(students, index, choice);
 
-            return 0;
+            // return 0;  wasted 6 hours becose  of this line
             break;
         case 7:
             system(CLEAR);
